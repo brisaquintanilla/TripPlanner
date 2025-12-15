@@ -72,37 +72,6 @@ Sugerencias de solución de problemas
 4) Genera el itinerario en formato vertical con miniaturas circulares laterales. Abre búsquedas en mapas con un clic.
 5) Para guardar como PDF: desde el itinerario, abre la vista de impresión (`/itinerary/print`), presiona Cmd/Ctrl+P y elige "Guardar como PDF".
 
-## Estructura de carpetas (parcial)
-- `app.py`: Flask app, rutas, búsqueda de ciudades, y base de datos mock de actividades.
-- `tripplanner/data.py`: constantes de datos (actividades, intereses, ciudades y destinos destacados).
-- `templates/base.html`: layout principal, navbar, estilos globales y spinner de carga.
-- `templates/index.html`: portada (hero, formulario, destinos destacados).
-- `templates/interests.html`: selección de intereses.
-- `templates/swipe.html`: tarjetas con gesto de arrastre/ swipe.
-- `templates/itinerary.html`: itinerario en línea de tiempo vertical con imágenes.
- - `templates/itinerary_print.html`: versión amigable para imprimir/guardar como PDF.
-
-## Lo Nuevo (esta iteración)
-- Búsqueda de ciudades más rápida: búsqueda local-first + Teleport/Nominatim como fallback.
-- Hero centrado y motto: “Tu viaje en pocos clicks”.
-- Navbar renovada: icono con gradiente y enlaces con íconos.
-- Indicador de carga: overlay con spinner al enviar el formulario inicial.
-- Swipe mejorado: arrastre con pointer events y animaciones fluidas.
-- “6 destinos que te van a inspirar”: imágenes actualizadas y set aleatorio.
-- Actualización de imágenes en actividades e intereses (arte, compras, aventura, etc.).
-- Itinerario en línea de tiempo vertical con miniaturas circulares laterales.
-
-## Notas de implementación
-- Autocomplete: local-first (lista interna) → Teleport API → Nominatim (geopy) como fallback.
-- UI: Tailwind y Font Awesome por CDN; no requiere build de frontend.
-- Imágenes: se actualizaron varias (arte y cultura, compras, kayak, trekking, Reikiavik, Estambul, Astana, Cartagena, Viena, etc.)
-
-## Personalización rápida
-- Colores/acentos: ajusta utilidades Tailwind en los templates.
- - Destinos destacados: edita `FEATURED_DESTINATIONS` en `tripplanner/data.py` (o usa `/api/featured`).
- - Actividades: modifica `ACTIVITIES_DB` en `tripplanner/data.py`.
- - Intereses: ajusta `INTERESTS_DEF` en `tripplanner/data.py`.
-
 
 ## Enlaces útiles
 - Flask: https://flask.palletsprojects.com/

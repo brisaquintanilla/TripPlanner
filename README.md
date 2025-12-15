@@ -5,15 +5,6 @@ TripPlanner
 ## Descripción
 - Genera itinerarios de viaje rápidos a partir de un destino y fechas. Elige hasta 3 intereses y desliza tarjetas para curar actividades. Incluye un buscador de ciudades optimizado, UI moderna con Tailwind, y un itinerario final en formato línea de tiempo vertical.
 
-## Lo Nuevo (esta iteración)
-- Búsqueda de ciudades más rápida: búsqueda local-first + Teleport/Nominatim como fallback.
-- Hero centrado y motto: “Tu viaje en pocos clicks”.
-- Navbar renovada: icono con gradiente y enlaces con íconos.
-- Indicador de carga: overlay con spinner al enviar el formulario inicial.
-- Swipe mejorado: arrastre con pointer events y animaciones fluidas.
-- “6 destinos que te van a inspirar”: imágenes actualizadas y set aleatorio.
-- Actualización de imágenes en actividades e intereses (arte, compras, aventura, etc.).
-- Itinerario en línea de tiempo vertical con miniaturas circulares laterales.
 
 ## Características
 - Plan en 3 pasos: destino/fechas → intereses → swipe de actividades.
@@ -48,6 +39,32 @@ python app.py
 PORT=5001 .venv/bin/python app.py
 ```
 
+## Ejecutar desde GitHub
+```zsh
+# 1) Clonar el repo
+git clone https://github.com/brisaquintanilla/TripPlanner.git
+cd TripPlanner
+
+# 2) Crear y activar entorno virtual
+python -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+
+# 3) Instalar dependencias
+pip install flask requests geopy
+
+# 4) Ejecutar (si 5000/5001 están ocupados, usa 5002)
+.venv/bin/python app.py              # puerto 5000
+PORT=5002 .venv/bin/python app.py   # puerto alterno
+
+# 5) Abrir en el navegador
+# http://localhost:5000   (o el puerto usado)
+```
+
+Sugerencias de solución de problemas
+- Si ves "Address already in use": prueba `PORT=5002` o libera el puerto con `lsof -nP -iTCP:<puerto>` y cierra el proceso.
+- Si ves `Exit Code: 127`: asegúrate de usar `.venv/bin/python` o activar el venv.
+- En Windows, usa `venv\Scripts\activate` y ejecuta `python app.py`.
+
 ## Uso
 1) En la portada, ingresa destino y fechas. El autocompletado responde rápido con coincidencias locales. Al enviar, verás un spinner indicando carga.
 2) Selecciona hasta 3 intereses (comida, museos, arte, aventura, etc.).
@@ -64,6 +81,16 @@ PORT=5001 .venv/bin/python app.py
 - `templates/swipe.html`: tarjetas con gesto de arrastre/ swipe.
 - `templates/itinerary.html`: itinerario en línea de tiempo vertical con imágenes.
  - `templates/itinerary_print.html`: versión amigable para imprimir/guardar como PDF.
+
+## Lo Nuevo (esta iteración)
+- Búsqueda de ciudades más rápida: búsqueda local-first + Teleport/Nominatim como fallback.
+- Hero centrado y motto: “Tu viaje en pocos clicks”.
+- Navbar renovada: icono con gradiente y enlaces con íconos.
+- Indicador de carga: overlay con spinner al enviar el formulario inicial.
+- Swipe mejorado: arrastre con pointer events y animaciones fluidas.
+- “6 destinos que te van a inspirar”: imágenes actualizadas y set aleatorio.
+- Actualización de imágenes en actividades e intereses (arte, compras, aventura, etc.).
+- Itinerario en línea de tiempo vertical con miniaturas circulares laterales.
 
 ## Notas de implementación
 - Autocomplete: local-first (lista interna) → Teleport API → Nominatim (geopy) como fallback.
@@ -89,7 +116,7 @@ PORT=5001 .venv/bin/python app.py
 
 ## Comandos útiles (git)
 ```zsh
-# Agregar cambios, commitear y hacer push a main
+# Agregar cambios, commitear y hacer push a main 
 git add .
 git commit -m "UI polish: hero centrado, navbar, spinner; timeline vertical; búsqueda local-first; imágenes actualizadas"
 git push origin main

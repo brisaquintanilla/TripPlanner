@@ -18,6 +18,7 @@ Características
 - Itinerario final con 3–4 actividades por día, con botones rápidos para búsquedas en Google Maps.
 - Wildcards: mezcla sugerida fuera de tus intereses para descubrir más.
 - UI con Tailwind CDN y Font Awesome; animaciones suaves y diseño responsive.
+ - Impresión/Exportación: vista de impresión lista para "Guardar como PDF" desde el navegador.
 
 Requisitos
 - Python 3.10+ (recomendado)
@@ -50,6 +51,7 @@ Uso
 2) Selecciona hasta 3 intereses (comida, museos, arte, aventura, etc.).
 3) Desliza tarjetas (drag/swipe) para “like”/“nope”.
 4) Genera el itinerario en formato vertical con miniaturas circulares laterales. Abre búsquedas en mapas con un clic.
+5) Para guardar como PDF: desde el itinerario, abre la vista de impresión (`/itinerary/print`), presiona Cmd/Ctrl+P y elige "Guardar como PDF".
 
 Estructura de carpetas (parcial)
 - `app.py`: Flask app, rutas, búsqueda de ciudades, y base de datos mock de actividades.
@@ -58,6 +60,7 @@ Estructura de carpetas (parcial)
 - `templates/interests.html`: selección de intereses.
 - `templates/swipe.html`: tarjetas con gesto de arrastre/ swipe.
 - `templates/itinerary.html`: itinerario en línea de tiempo vertical con imágenes.
+ - `templates/itinerary_print.html`: versión amigable para imprimir/guardar como PDF.
 
 Notas de implementación
 - Autocomplete: local-first (lista interna) → Teleport API → Nominatim (geopy) como fallback.

@@ -387,6 +387,43 @@ LOCAL_CITY_FALLBACKS = [
     "Papeete, Polinesia Francesa",
 ]
 
+# Definición de intereses (para renderizar tarjetas desde Python)
+INTERESTS_DEF = [
+    {"key": "comida", "title": "Gastronomía", "icon": "fa-utensils", "image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80", "desc": "Restaurantes, mercados y sabores locales."},
+    {"key": "arte", "title": "Arte y Cultura", "icon": "fa-palette", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpneyN9tGfVZ3glPCSjiDQmmSweitJn3QzbQ&s", "desc": "Museos, galerías y exposiciones."},
+    {"key": "paseo", "title": "Paseos", "icon": "fa-person-walking", "image": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80", "desc": "Parques, plazas y caminatas."},
+    {"key": "vistas", "title": "Vistas Panorámicas", "icon": "fa-binoculars", "image": "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=800&q=80", "desc": "Miradores y paisajes increíbles."},
+    {"key": "cafes", "title": "Cafés y Relax", "icon": "fa-mug-hot", "image": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80", "desc": "Ambiente relajado y buen café."},
+    {"key": "museos", "title": "Historia y Museos", "icon": "fa-landmark", "image": "https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?auto=format&fit=crop&w=800&q=80", "desc": "Aprende sobre el pasado y la ciencia."},
+    {"key": "aventura", "title": "Aventura", "icon": "fa-mountain", "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80", "desc": "Kayak, globo, senderos épicos."},
+    {"key": "nocturna", "title": "Vida nocturna", "icon": "fa-moon", "image": "https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=900&q=80", "desc": "Cocteles, jazz y rooftops."},
+    {"key": "compras", "title": "Compras", "icon": "fa-shopping-bag", "image": "https://cdn.sanity.io/images/nxpteyfv/goguides/59aa10e938b999bcb34acdc4ffe461569df7ad21-1600x1066.jpg", "desc": "Mercados, outlets y hallazgos."},
+    {"key": "playa", "title": "Playa y mar", "icon": "fa-umbrella-beach", "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80", "desc": "Veleros, snorkel y sunsets."},
+    {"key": "bienestar", "title": "Bienestar", "icon": "fa-leaf", "image": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80", "desc": "Spa, yoga y termales."},
+]
+
+# Destinos destacados (servidos desde backend para reducir JS en templates)
+FEATURED_DESTINATIONS = [
+    {"name": "Kyoto, Japón", "image": "https://st3.depositphotos.com/2051931/18142/i/450/depositphotos_181425574-stock-photo-japanese-pagoda-old-house-snow.jpg", "tagline": "Templos y jardines zen"},
+    {"name": "Marrakech, Marruecos", "image": "https://assets3.thrillist.com/v1/image/2819216/792x526/scale;webp=auto;jpeg_quality=60;progressive.jpg", "tagline": "Medinas, zocos y té de menta"},
+    {"name": "Reikiavik, Islandia", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStaNRl2xdkzcgwi0v5rEle65yX9VdnoWQBJg&s", "tagline": "Auroras, cascadas y termas"},
+    {"name": "Lisboa, Portugal", "image": "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80", "tagline": "Tranvías, fado y miradores"},
+    {"name": "Ciudad del Cabo, Sudáfrica", "image": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80", "tagline": "Montaña de la Mesa y océano"},
+    {"name": "Viena, Austria", "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/6b/48/6d/photo0jpg.jpg?w=900&h=500&s=1", "tagline": "Palacios, ópera y café"},
+    {"name": "Cartagena, Colombia", "image": "https://www.exp1.com/blog/wp-content/uploads/sites/7/2020/11/Day-4.jpeg", "tagline": "Murallas coloniales y mar Caribe"},
+    {"name": "Seúl, Corea del Sur", "image": "https://images.unsplash.com/photo-1506816561089-5cc37b3aa9b0?fit=max&fm=jpg&ixid=M3wzNTY3MHwwfDF8YWxsfHx8fHx8fHx8MTY5ODkzMTI5Mnw&ixlib=rb-4.0.3&q=75&w=720&utm_medium=referral&utm_source=vocal.media", "tagline": "Palacios, K-food y neón"},
+    {"name": "Nueva York, Estados Unidos", "image": "https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt143cf9f3ca5a3a62/65610a0ed28c5a5f993deafe/BCC-2022-NYC-30THINGS-HEADER-e1649786857821-1-1536x1056.webp?format=webp&quality=60&width=1440", "tagline": "Skyline, Broadway y parques"},
+    {"name": "Queenstown, Nueva Zelanda", "image": "https://www.newzealand.com/assets/externally-managed-assets/tbd-assets/tbd-folder-10092946/img-1731461073-7951-258451-tbd-asset__ExtRewriteWyJwbmciLCJqcGciXQ_aWxvdmVrZWxseQo_CropResizeWzk0MCw1MzAsOTAsImpwZyJd.jpg", "tagline": "Aventura y lagos cristalinos"},
+    {"name": "Estambul, Turquía", "image": "https://www.traveltalktours.com/wp-content/smush-webp/2024/05/Choose-Your-Favorite-Destinations-in-Turkey-1024x683.jpg.webp", "tagline": "Mezquitas, bazares y Bosforo"},
+    {"name": "Buenos Aires, Argentina", "image": "https://plus.unsplash.com/premium_photo-1697729901052-fe8900e24993?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnVlbm9zJTIwYWlyZXN8ZW58MHx8MHx8fDA%3D", "tagline": "Tango, asado y arquitectura europea"},
+    {"name": "Astana, Kazajistán", "image": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/91/c1/e3/caption.jpg?w=1200&h=-1&s=1", "tagline": "Arquitectura futurista y parques"},
+]
+
+def pick_featured(count=6):
+    pool = FEATURED_DESTINATIONS[:]
+    random.shuffle(pool)
+    return pool[: min(count, len(pool))]
+
 def validate_destination(destination):
     search_term = (destination or "").strip()
     normalized_search = normalize_text(search_term)
@@ -419,7 +456,9 @@ def validate_destination(destination):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Render inicial con el backend (menos JS/HTML en templates)
+    initial_featured = pick_featured()
+    return render_template('index.html', featured_destinations=initial_featured)
 
 @app.route('/search_city')
 def search_city():
@@ -510,7 +549,7 @@ def interests():
         session['interests'] = selected_interests
         return redirect(url_for('swipe'))
         
-    return render_template('interests.html', destination=session['destination'])
+    return render_template('interests.html', destination=session['destination'], interests_def=INTERESTS_DEF)
 
 @app.route('/swipe')
 def swipe():
@@ -685,6 +724,10 @@ def itinerary_print():
         end_date=end_date,
         itinerary=itinerary,
     )
+
+@app.route('/api/featured')
+def api_featured():
+    return jsonify(pick_featured())
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

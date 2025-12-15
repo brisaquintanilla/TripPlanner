@@ -1,35 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
-<style>
-  body { font-family: 'Poppins', Arial, sans-serif; }
-  .header { text-align:center; margin-bottom: 16px; }
-  .title { font-size: 24px; font-weight: 700; }
-  .dates { color: #94a3b8; margin-top: 4px; }
-  .day { margin: 12px 0; border: 1px solid #334155; border-radius: 8px; }
-  .day h3 { background: #0f172a; color: white; padding: 8px 12px; border-bottom: 1px solid #334155; }
-  .act { padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
-  .act img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid #334155; }
-  .act .name { color: #e2e8f0; font-weight: 600; }
-  .act .cat { color: #94a3b8; font-size: 11px; text-transform: uppercase; }
-</style>
-<div class="header">
-  <div class="title">Itinerario · {{ destination }}</div>
-  <div class="dates">{{ start_date.strftime('%d %b, %Y') }} → {{ end_date.strftime('%d %b, %Y') }}</div>
-</div>
-{% for day_plan in itinerary %}
-<div class="day">
-  <h3>Día {{ day_plan.day }}</h3>
-  {% for activity in day_plan.activities %}
-  <div class="act">
-    {% if activity.image %}
-    <img src="{{ activity.image }}" alt="{{ activity.title }}">
-    {% endif %}
-    <div>
-      <div class="name">{{ activity.title }}</div>
-      <div class="cat">{{ activity.category }}</div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% endfor %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0; url=/itinerary/print" />
+  <title>Exportar a PDF (usar impresión)</title>
+</head>
+<body>
+  <p>Redirigiendo a la vista de impresión… Si no ocurre, <a href="/itinerary/print">haz clic aquí</a>.</p>
+</body>
+</html>

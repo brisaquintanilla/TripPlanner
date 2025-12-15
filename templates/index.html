@@ -212,35 +212,14 @@
         }
     });
 
-    // Destinos destacados dinámicos
+    // Destinos destacados desde backend (menos JS/HTML en template)
     const featuredContainer = document.getElementById('featured-destinations');
     const refreshDestinationsBtn = document.getElementById('refresh-destinations');
-    const featuredDestinations = [
-        { name: 'Kyoto, Japón', image: 'https://st3.depositphotos.com/2051931/18142/i/450/depositphotos_181425574-stock-photo-japanese-pagoda-old-house-snow.jpg', tagline: 'Templos y jardines zen' },
-        { name: 'Marrakech, Marruecos', image: 'https://assets3.thrillist.com/v1/image/2819216/792x526/scale;webp=auto;jpeg_quality=60;progressive.jpg', tagline: 'Medinas, zocos y té de menta' },
-        { name: 'Reikiavik, Islandia', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStaNRl2xdkzcgwi0v5rEle65yX9VdnoWQBJg&s', tagline: 'Auroras, cascadas y termas' },
-        { name: 'Lisboa, Portugal', image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80', tagline: 'Tranvías, fado y miradores' },
-        { name: 'Ciudad del Cabo, Sudáfrica', image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80', tagline: 'Montaña de la Mesa y océano' },
-        { name: 'Viena, Austria', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/6b/48/6d/photo0jpg.jpg?w=900&h=500&s=1', tagline: 'Palacios, ópera y café' },
-        { name: 'Cartagena, Colombia', image: 'https://www.exp1.com/blog/wp-content/uploads/sites/7/2020/11/Day-4.jpeg', tagline: 'Murallas coloniales y mar Caribe' },
-        { name: 'Seúl, Corea del Sur', image: 'https://images.unsplash.com/photo-1506816561089-5cc37b3aa9b0?fit=max&fm=jpg&ixid=M3wzNTY3MHwwfDF8YWxsfHx8fHx8fHx8MTY5ODkzMTI5Mnw&ixlib=rb-4.0.3&q=75&w=720&utm_medium=referral&utm_source=vocal.media', tagline: 'Palacios, K-food y neón' },
-        { name: 'Nueva York, Estados Unidos', image: 'https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt143cf9f3ca5a3a62/65610a0ed28c5a5f993deafe/BCC-2022-NYC-30THINGS-HEADER-e1649786857821-1-1536x1056.webp?format=webp&quality=60&width=1440', tagline: 'Skyline, Broadway y parques' },
-        { name: 'Queenstown, Nueva Zelanda', image: 'https://www.newzealand.com/assets/externally-managed-assets/tbd-assets/tbd-folder-10092946/img-1731461073-7951-258451-tbd-asset__ExtRewriteWyJwbmciLCJqcGciXQ_aWxvdmVrZWxseQo_CropResizeWzk0MCw1MzAsOTAsImpwZyJd.jpg', tagline: 'Aventura y lagos cristalinos' },
-        { name: 'Estambul, Turquía', image: 'https://www.traveltalktours.com/wp-content/smush-webp/2024/05/Choose-Your-Favorite-Destinations-in-Turkey-1024x683.jpg.webp', tagline: 'Mezquitas, bazares y Bosforo' },
-        { name: 'Buenos Aires, Argentina', image: 'https://plus.unsplash.com/premium_photo-1697729901052-fe8900e24993?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnVlbm9zJTIwYWlyZXN8ZW58MHx8MHx8fDA%3D', tagline: 'Tango, asado y arquitectura europea' },
-        { name: 'Astana, Kazajistán', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/91/c1/e3/caption.jpg?w=1200&h=-1&s=1', tagline: 'Arquitectura futurista y parques' }
-    ];
 
-    function pickSix() {
-        return [...featuredDestinations]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 6);
-    }
-
-    function renderDestinations() {
+    function renderFrom(items) {
         if (!featuredContainer) return;
         featuredContainer.innerHTML = '';
-        pickSix().forEach((dest) => {
+        items.forEach((dest) => {
             const card = document.createElement('button');
             card.type = 'button';
             card.className = 'group relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/70 hover:border-sky-600 transition shadow-lg hover:shadow-sky-500/20 text-left';
@@ -269,12 +248,23 @@
         });
     }
 
+    async function loadFeatured() {
+        try {
+            const res = await fetch('/api/featured');
+            const data = await res.json();
+            renderFrom(data);
+        } catch (e) {
+            // Si falla, no romper UI
+        }
+    }
+
     refreshDestinationsBtn?.addEventListener('click', (e) => {
         e.preventDefault();
-        renderDestinations();
+        loadFeatured();
     });
 
-    renderDestinations();
+    // Cargar set inicial del backend
+    loadFeatured();
 
     // Show loading on form submit
     const mainForm = document.getElementById('main-form');

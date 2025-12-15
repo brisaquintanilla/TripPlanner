@@ -1,0 +1,3 @@
+# Favor Python in GitHub language stats by excluding templates/static
+templates/** linguist-vendored
+static/** linguist-vendored

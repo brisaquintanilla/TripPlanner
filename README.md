@@ -76,18 +76,6 @@ PORT=5001 .venv/bin/python app.py
  - Actividades: modifica `ACTIVITIES_DB` en `tripplanner/data.py`.
  - Intereses: ajusta `INTERESTS_DEF` en `tripplanner/data.py`.
 
-## Capturas de pantalla / GIF (opcional)
-- Portada (Hero):
-  
-	![Portada](docs/hero.png)
-
-- Swipe de actividades:
-  
-	![Swipe](docs/swipe.png)
-
-- Itinerario vertical:
-  
-	![Itinerario](docs/itinerary.png)
 
 ## Enlaces útiles
 - Flask: https://flask.palletsprojects.com/

@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[80vh] overflow-hidden">
+    
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-white">Descubre Actividades</h2>
+        <p class="text-slate-400">Desliza a la derecha para añadir, a la izquierda para descartar.</p>
+        <p class="text-slate-500 text-sm mt-2">Necesitas al menos {{ min_activities }} actividades ({{ duration }} días x 3) para armar tu itinerario. Las wildcards te sorprenderán.</p>
+    </div>
+
+    <!-- Card Container -->
+    <div id="card-container" class="relative w-full max-w-md h-[500px]">
+        <!-- Cards will be injected here by JS -->
+        <div id="loading" class="absolute inset-0 flex items-center justify-center text-white">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-sky-500"></i>
+        </div>
+        <div id="empty-state" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center bg-slate-800 rounded-2xl border border-slate-700 p-8">
+            <i class="fa-solid fa-check-circle text-6xl text-green-500 mb-4"></i>
+            <h3 class="text-2xl font-bold text-white">¡Listo!</h3>
+            <p class="text-slate-300 mb-6">Has revisado todas las actividades.</p>
+            <button onclick="finalizeItinerary()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-full transition-all">
+                Ver mi Itinerario
+            </button>
+        </div>
+        <div id="loading-itinerary" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center bg-slate-900/90 backdrop-blur rounded-2xl border border-slate-700 p-8">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-sky-400 mb-4"></i>
+            <h3 class="text-xl font-bold text-white">Cargando tu itinerario...</h3>
+            <p class="text-slate-300 text-sm mt-2">Organizando actividades por días.</p>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex flex-col items-center gap-4 mt-8 w-full max-w-xl">
+        <div class="flex gap-8">
+            <button onclick="handleSwipe('left')" class="w-16 h-16 rounded-full bg-slate-800 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center shadow-lg hover:shadow-red-500/30 text-2xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <button onclick="handleSwipe('right')" class="w-16 h-16 rounded-full bg-slate-800 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transition-all flex items-center justify-center shadow-lg hover:shadow-green-500/30 text-2xl">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+        </div>
+        <div id="skip-cta" class="hidden w-full bg-slate-800/80 border border-slate-700 rounded-xl p-4 flex items-center justify-between gap-4">
+            <div class="text-left">
+                <p class="text-white font-semibold">Ya tienes actividades suficientes.</p>
+                <p class="text-slate-400 text-sm">Puedes saltar directo a tu itinerario.</p>
+            </div>
+            <button onclick="finalizeItinerary()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg transition flex items-center gap-2">
+                <i class="fa-solid fa-forward"></i> Saltar a mi itinerario
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const minActivities = {{ min_activities }};
+    const durationDays = {{ duration }};
+    let activities = [];
+    let currentIndex = 0;
+    let likedActivities = [];
+
+    // Fetch activities on load
+    fetch('/get_activities')
+        .then(response => response.json())
+        .then(data => {
+            activities = data;
+            document.getElementById('loading').classList.add('hidden');
+            if (activities.length > 0) {
+                renderCard();
+            } else {
+                document.getElementById('empty-state').classList.remove('hidden');
+            }
+        });
+
+    function renderCard() {
+        if (currentIndex >= activities.length) {
+                showLoadingAndFinalize();
+                return;
+            }
+
+            const activity = activities[currentIndex];
+            const isWildcard = activity.wildcard;
+            const card = document.createElement('div');
+            card.className = 'absolute inset-0 bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 transform transition-transform duration-300 cursor-grab active:cursor-grabbing will-change-transform';
+            card.id = 'current-card';
+        
+            card.innerHTML = `
+            <div class="h-3/5 bg-cover bg-center relative" style="background-image: url('${activity.image}');">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+                <div class="absolute bottom-4 left-4">
+                    <span class="bg-sky-500/80 text-white text-xs font-bold px-2 py-1 rounded-full uppercase tracking-wide mb-2 inline-block">
+                        ${activity.category}
+                    </span>
+                    ${isWildcard ? '<span class="ml-2 bg-rose-500/80 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest">Wildcard</span>' : ''}
+                    <h3 class="text-2xl font-bold text-white shadow-black drop-shadow-md">${activity.title}</h3>
+                </div>
+                ${isWildcard ? '<div class="absolute top-4 right-4 bg-rose-600/90 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg animate-pulse">Sugerencia extra</div>' : ''}
+            </div>
+            <div class="p-6 h-2/5 flex flex-col justify-between">
+                <div class="flex items-start gap-4">
+                    <div class="bg-slate-700 p-3 rounded-full text-sky-400">
+                        <i class="fa-solid ${activity.icon} text-xl"></i>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Disfruta de esta increíble experiencia en tu viaje. Una actividad perfecta para los amantes de ${activity.category}.
+                    </p>
+                </div>
+                <div class="text-center text-slate-500 text-xs mt-4">
+                    ${currentIndex + 1} de ${activities.length}
+                </div>
+            </div>
+            
+            <!-- Overlay for swipe feedback -->
+            <div id="overlay-nope" class="absolute top-8 right-8 border-4 border-red-500 text-red-500 font-bold text-4xl px-4 py-2 rounded-lg transform rotate-12 opacity-0 transition-opacity">NOPE</div>
+            <div id="overlay-like" class="absolute top-8 left-8 border-4 border-green-500 text-green-500 font-bold text-4xl px-4 py-2 rounded-lg transform -rotate-12 opacity-0 transition-opacity">LIKE</div>
+        `;
+
+        const container = document.getElementById('card-container');
+        // Remove previous card if exists (except empty state)
+        const oldCard = document.getElementById('current-card');
+        if(oldCard) oldCard.remove();
+        
+        container.appendChild(card);
+
+        // Add pointer drag interaction for swipe
+        let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
+        card.style.touchAction = 'none';
+
+        card.addEventListener('pointerdown', (ev) => {
+            isDragging = true;
+            startX = ev.clientX;
+            startY = ev.clientY;
+            card.setPointerCapture(ev.pointerId);
+            card.style.transition = 'none';
+        });
+
+        card.addEventListener('pointermove', (ev) => {
+            if (!isDragging) return;
+            currentX = ev.clientX - startX;
+            currentY = ev.clientY - startY;
+            const rotate = currentX / 20;
+            card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+            const like = card.querySelector('#overlay-like');
+            const nope = card.querySelector('#overlay-nope');
+            const opacity = Math.min(Math.abs(currentX) / 150, 1);
+            if (currentX > 0) { like.style.opacity = opacity; nope.style.opacity = 0; }
+            else { nope.style.opacity = opacity; like.style.opacity = 0; }
+        });
+
+        card.addEventListener('pointerup', (ev) => {
+            if (!isDragging) return;
+            isDragging = false;
+            card.releasePointerCapture(ev.pointerId);
+            card.style.transition = 'transform 300ms ease, opacity 300ms ease';
+            const threshold = 120;
+            if (Math.abs(currentX) > threshold) {
+                if (currentX > 0) {
+                    // like
+                    likedActivities.push(activity);
+                    card.style.transform = 'translate(150%, 10%) rotate(20deg)';
+                } else {
+                    // nope
+                    card.style.transform = 'translate(-150%, 10%) rotate(-20deg)';
+                }
+                card.style.opacity = '0';
+                setTimeout(() => {
+                    currentIndex++;
+                    renderCard();
+                    updateSkipCTA();
+                }, 320);
+            } else {
+                // Snap back
+                card.style.transform = 'translate(0,0) rotate(0)';
+                const like = card.querySelector('#overlay-like');
+                const nope = card.querySelector('#overlay-nope');
+                like.style.opacity = 0; nope.style.opacity = 0;
+            }
+            currentX = 0; currentY = 0;
+        });
+    }
+
+    function showLoadingAndFinalize() {
+        document.getElementById('loading-itinerary').classList.remove('hidden');
+        finalizeItinerary();
+    }
+
+    function handleSwipe(direction) {
+        const card = document.getElementById('current-card');
+        if (!card) return;
+
+        if (direction === 'right') {
+            likedActivities.push(activities[currentIndex]);
+            card.style.transform = 'translate(150%, 10%) rotate(20deg)';
+            card.querySelector('#overlay-like').style.opacity = '1';
+        } else {
+            card.style.transform = 'translate(-150%, 10%) rotate(-20deg)';
+            card.querySelector('#overlay-nope').style.opacity = '1';
+        }
+
+        card.style.opacity = '0';
+
+        setTimeout(() => {
+            currentIndex++;
+            renderCard();
+            updateSkipCTA();
+        }, 300);
+    }
+
+    function finalizeItinerary() {
+        document.getElementById('loading-itinerary').classList.remove('hidden');
+        fetch('/finalize_itinerary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ liked_activities: likedActivities }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(() => {
+            // Si algo falla, re-mostrar el botón manual
+            document.getElementById('loading-itinerary').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+        });
+    }
+
+    function updateSkipCTA() {
+        const skipCta = document.getElementById('skip-cta');
+        if (!skipCta) return;
+        if (likedActivities.length >= minActivities) {
+            skipCta.classList.remove('hidden');
+        }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') handleSwipe('left');
+        if (e.key === 'ArrowRight') handleSwipe('right');
+    });
+
+    updateSkipCTA();
+
+</script>
+{% endblock %}

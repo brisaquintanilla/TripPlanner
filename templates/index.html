@@ -1,74 +1,267 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Planificador de Viajes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0; background: #f5f5f7; }
-        header { background: #1f2933; color: #fff; padding: 1rem 1.5rem; }
-        main { padding: 1.5rem; max-width: 960px; margin: 0 auto; }
-        h1 { margin: 0 0 0.5rem; }
-        .trip-list { display: grid; gap: 1rem; margin-top: 1rem; }
-        .trip-card { background: #ffffff; border-radius: 0.75rem; padding: 1rem 1.25rem; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.10); }
-        .trip-title { font-weight: 600; margin: 0 0 0.25rem; }
-        .trip-days { font-size: 0.9rem; color: #4b5563; margin: 0; }
-        .empty { color: #6b7280; font-style: italic; margin-top: 0.5rem; }
+{% extends "base.html" %}
 
-        .field-label { font-size: 0.9rem; font-weight: 500; color: #374151; margin-bottom: 0.25rem; display: block; }
-        .autocomplete-wrapper { position: relative; max-width: 420px; }
-        #destination-input { width: 100%; box-sizing: border-box; padding: 0.6rem 0.75rem; border-radius: 0.5rem; border: 1px solid #d1d5db; font-size: 0.95rem; outline: none; transition: border-color 0.15s ease, box-shadow 0.15s ease; background: #ffffff; }
-        #destination-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
-
-        .suggestions-list { position: absolute; top: 100%; left: 0; right: 0; margin-top: 0.25rem; background: #ffffff; border-radius: 0.5rem; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18); max-height: 260px; overflow-y: auto; z-index: 20; border: 1px solid #e5e7eb; }
-        .suggestion-item { width: 100%; padding: 0.5rem 0.75rem; text-align: left; border: none; background: transparent; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
-        .suggestion-item:hover, .suggestion-item[aria-selected="true"] { background: #eff6ff; }
-        .suggestion-main { font-weight: 500; color: #111827; }
-        .suggestion-secondary { font-size: 0.8rem; color: #6b7280; margin-left: 0.75rem; }
-        .suggestions-empty { padding: 0.5rem 0.75rem; font-size: 0.85rem; color: #6b7280; }
-    </style>
-</head>
-<body>
-<header>
-    <h1>Planificador de Viajes</h1>
-    <p>Prototipo – lógica principal en Python (Flask)</p>
-</header>
-<main>
-    <section>
-        <h2>Destino del viaje</h2>
-        <p style="margin-top: 0; color: #4b5563; max-width: 560px; font-size: 0.95rem;">
-            Empieza a escribir una ciudad del mundo y elige una sugerencia
-            de la lista. No necesitas adivinar el formato correcto.
-        </p>
-        <div class="autocomplete-wrapper">
-            <label for="destination-input" class="field-label">Destino</label>
-            <input
-                id="destination-input"
-                type="text"
-                name="destination"
-                autocomplete="off"
-                placeholder="Ej. Madrid, Ciudad de México, Tokio"
-            />
-            <div id="destination-suggestions" class="suggestions-list" hidden></div>
+{% block content %}
+<div class="bg-travel min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl w-full space-y-8 bg-gradient-to-b from-slate-900/80 to-slate-900/70 p-12 rounded-3xl backdrop-blur-lg border border-slate-700 shadow-2xl">
+        <div class="text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/15 border border-sky-500/30 text-sky-300 text-xs font-semibold uppercase tracking-[0.2em]">Tu viaje en pocos clicks</div>
+            <h1 class="mt-4 text-4xl md:text-5xl font-extrabold text-white tracking-tight">¿A dónde viajas?</h1>
+            <p class="mt-3 text-lg text-slate-300">Dinos el destino y te ayudamos a crear un itinerario perfecto, rápido y bonito.</p>
         </div>
-    </section>
 
-    <section>
-        <h2>Próximos viajes</h2>
-        {% if trips and trips|length > 0 %}
-        <div class="trip-list" id="trip-list">
-            {% for trip in trips %}
-            <article class="trip-card">
-                <h3 class="trip-title">{{ trip.destination }}</h3>
-                <p class="trip-days">{{ trip.days }} días</p>
-            </article>
-            {% endfor %}
+        <form id="main-form" class="mt-6" action="/plan" method="POST">
+            <!-- Destination (primary, prominent) -->
+            <div class="relative w-full">
+                <label for="destination" class="sr-only">Destino</label>
+                <div class="relative rounded-xl">
+                    <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-sky-400 text-2xl">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <input type="text" name="destination" id="destination" required autocomplete="off"
+                        class="block w-full pl-16 pr-4 py-6 bg-white/5 border border-slate-700 rounded-2xl text-white placeholder-slate-400 text-lg md:text-2xl focus:ring-4 focus:ring-sky-400/20 focus:border-sky-400 transition" 
+                        placeholder="Ej. París, Francia">
+                    <div id="autocomplete-list" class="absolute z-20 left-0 right-0 bg-slate-800 border border-slate-700 rounded-b-2xl mt-1 shadow-2xl hidden max-h-72 overflow-y-auto"></div>
+                </div>
+                <p class="mt-2 text-xs text-slate-400 pro-small">Si no ves tu ciudad en la lista, escribe el nombre completo y te ayudamos.</p>
+            </div>
+
+            <!-- Dates row (secondary) -->
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-slate-300 mb-1">Fecha de Ida</label>
+                    <div class="relative rounded-lg">
+                        <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+                        <input type="date" name="start_date" id="start_date" required 
+                            class="block w-full pl-10 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm focus:ring-sky-500 focus:border-sky-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label for="end_date" class="block text-sm font-medium text-slate-300 mb-1">Fecha de Vuelta</label>
+                    <div class="relative rounded-lg">
+                        <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-regular fa-calendar-check"></i>
+                        </div>
+                        <input type="date" name="end_date" id="end_date" required 
+                            class="block w-full pl-10 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm focus:ring-sky-500 focus:border-sky-500 transition">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-4">
+                <button type="submit" class="w-full sm:w-auto inline-flex items-center gap-3 justify-center py-4 px-6 bg-gradient-to-r from-sky-500 to-emerald-400 text-white font-bold rounded-xl shadow-lg hover:scale-[1.02] transition">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Empezar a planear
+                </button>
+                <a href="#destinos" class="w-full sm:w-auto inline-flex items-center gap-3 justify-center py-4 px-6 border border-slate-700 text-slate-200 rounded-xl hover:border-sky-400 transition">
+                    <i class="fa-solid fa-compass text-sky-300"></i>
+                    Explorar destinos sugeridos
+                </a>
+            </div>
+        </form>
+
+        <!-- Features row with colorful icons -->
+        <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-sky-500/20 text-sky-300">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold">Itinerarios rápidos</div>
+                    <div class="text-xs text-slate-400 pro-small">3–4 actividades por día</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-rose-500/20 text-rose-300">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold">Sugerencias inteligentes</div>
+                    <div class="text-xs text-slate-400 pro-small">Wildcards para explorar</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-300">
+                    <i class="fa-solid fa-spa"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold">Personalizable</div>
+                    <div class="text-xs text-slate-400 pro-small">Elige hasta 3 intereses</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-300">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </div>
+                <div>
+                    <div class="text-sm font-semibold">Mapas útiles</div>
+                    <div class="text-xs text-slate-400 pro-small">Abre búsquedas optimizadas</div>
+                </div>
+            </div>
         </div>
-        {% else %}
-        <p class="empty">Aún no hay viajes planificados.</p>
-        {% endif %}
-    </section>
-</main>
-<script src="{{ url_for('static', filename='app.js') }}"></script>
-</body>
-</html>
+    </div>
+</div>
+
+<!-- Destinos destacados -->
+<section id="destinos" class="bg-slate-950/60 border-t border-slate-800 py-16 px-4 sm:px-8">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+            <div>
+                <p class="text-sky-400 font-semibold uppercase tracking-[0.2em] text-xs">Selección curada</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-2">6 destinos que te van a inspirar</h2>
+                <p class="text-slate-300 mt-3 max-w-2xl">Pulsa en cualquiera para rellenar el formulario de arriba al instante y empezar a planear.</p>
+            </div>
+            <button id="refresh-destinations" class="inline-flex items-center gap-2 text-sky-300 hover:text-white text-sm font-semibold border border-sky-700/60 px-4 py-2 rounded-lg bg-slate-900/60 hover:bg-sky-900/30 transition">
+                <i class="fa-solid fa-shuffle"></i> Otro set
+            </button>
+        </div>
+        <div id="featured-destinations" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+</section>
+
+<!-- Contacto -->
+<section id="contacto" class="py-14 px-4 sm:px-8 border-t border-slate-800 bg-slate-900">
+    <div class="max-w-4xl mx-auto text-center space-y-4">
+        <p class="text-sky-400 font-semibold uppercase tracking-[0.2em] text-xs">¿Dudas?</p>
+        <h3 class="text-2xl md:text-3xl font-bold text-white">Hablemos de tu próximo viaje</h3>
+        <p class="text-slate-300">Escríbenos y te ayudamos a ajustar tu itinerario.</p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="mailto:hola@tripplanner.test" class="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-3 px-6 rounded-lg transition shadow-lg shadow-sky-500/20">
+                <i class="fa-solid fa-envelope"></i> hola@tripplanner.test
+            </a>
+            <a href="#destination" class="inline-flex items-center justify-center gap-2 border border-slate-700 text-white font-semibold py-3 px-6 rounded-lg hover:border-sky-600 hover:text-sky-200 transition">
+                <i class="fa-solid fa-location-dot"></i> Volver arriba
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('start_date').setAttribute('min', today);
+    document.getElementById('end_date').setAttribute('min', today);
+
+    // Update end date min when start date changes
+    document.getElementById('start_date').addEventListener('change', function() {
+        document.getElementById('end_date').setAttribute('min', this.value);
+    });
+
+    // Autocomplete Logic
+    const destinationInput = document.getElementById('destination');
+    const autocompleteList = document.getElementById('autocomplete-list');
+    let debounceTimer;
+
+    destinationInput.addEventListener('input', function() {
+        const query = this.value;
+        clearTimeout(debounceTimer);
+        
+        if (query.length < 1) {
+            autocompleteList.classList.add('hidden');
+            return;
+        }
+
+        debounceTimer = setTimeout(() => {
+            fetch(`/search_city?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    autocompleteList.innerHTML = '';
+                    if (data.length > 0) {
+                        autocompleteList.classList.remove('hidden');
+                        data.forEach(city => {
+                            const item = document.createElement('div');
+                            item.className = 'px-4 py-2 hover:bg-slate-700 cursor-pointer text-slate-300 hover:text-white transition-colors border-b border-slate-700 last:border-0';
+                            item.textContent = city;
+                            item.addEventListener('click', () => {
+                                destinationInput.value = city;
+                                autocompleteList.classList.add('hidden');
+                            });
+                            autocompleteList.appendChild(item);
+                        });
+                    } else {
+                        autocompleteList.classList.add('hidden');
+                    }
+                });
+        }, 150); // Debounce 150ms para responder más rápido
+    });
+
+    // Close autocomplete when clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== destinationInput && e.target !== autocompleteList) {
+            autocompleteList.classList.add('hidden');
+        }
+    });
+
+    // Destinos destacados dinámicos
+    const featuredContainer = document.getElementById('featured-destinations');
+    const refreshDestinationsBtn = document.getElementById('refresh-destinations');
+    const featuredDestinations = [
+        { name: 'Kyoto, Japón', image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80', tagline: 'Templos y jardines zen' },
+        { name: 'Marrakech, Marruecos', image: 'https://images.unsplash.com/photo-1505764706515-aa95265c5abc?auto=format&fit=crop&w=900&q=80', tagline: 'Medinas, zocos y té de menta' },
+        { name: 'Reikiavik, Islandia', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStaNRl2xdkzcgwi0v5rEle65yX9VdnoWQBJg&s', tagline: 'Auroras, cascadas y termas' },
+        { name: 'Lisboa, Portugal', image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80', tagline: 'Tranvías, fado y miradores' },
+        { name: 'Ciudad del Cabo, Sudáfrica', image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80', tagline: 'Montaña de la Mesa y océano' },
+        { name: 'Viena, Austria', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/6b/48/6d/photo0jpg.jpg?w=900&h=500&s=1', tagline: 'Palacios, ópera y café' },
+                { name: 'Cartagena, Colombia', image: 'https://www.exp1.com/blog/wp-content/uploads/sites/7/2020/11/Day-4.jpeg', tagline: 'Murallas coloniales y mar Caribe' },,
+        { name: 'Seúl, Corea del Sur', image: 'https://images.unsplash.com/photo-1506816561089-5cc37b3aa9b0?fit=max&fm=jpg&ixid=M3wzNTY3MHwwfDF8YWxsfHx8fHx8fHx8MTY5ODkzMTI5Mnw&ixlib=rb-4.0.3&q=75&w=720&utm_medium=referral&utm_source=vocal.media', tagline: 'Palacios, K-food y neón' },
+        { name: 'Nueva York, Estados Unidos', image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80', tagline: 'Skyline, Broadway y parques' },
+        { name: 'Queenstown, Nueva Zelanda', image: 'https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?auto=format&fit=crop&w=900&q=80', tagline: 'Aventura y lagos cristalinos' },
+        { name: 'Estambul, Turquía', image: 'https://www.traveltalktours.com/wp-content/smush-webp/2024/05/Choose-Your-Favorite-Destinations-in-Turkey-1024x683.jpg.webp', tagline: 'Mezquitas, bazares y Bosforo' },
+        { name: 'Astana, Kazajistán', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/91/c1/e3/caption.jpg?w=1200&h=-1&s=1', tagline: 'Arquitectura futurista y parques' }
+    ];
+
+    function pickSix() {
+        return [...featuredDestinations]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 6);
+    }
+
+    function renderDestinations() {
+        if (!featuredContainer) return;
+        featuredContainer.innerHTML = '';
+        pickSix().forEach((dest) => {
+            const card = document.createElement('button');
+            card.type = 'button';
+            card.className = 'group relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/70 hover:border-sky-600 transition shadow-lg hover:shadow-sky-500/20 text-left';
+            card.innerHTML = `
+                <div class="h-48 bg-cover bg-center" style="background-image: url('${dest.image}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
+                </div>
+                <div class="p-5 space-y-2">
+                    <div class="flex items-center gap-2 text-sky-300 font-semibold text-xs uppercase tracking-[0.15em]">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Destino sugerido
+                    </div>
+                    <h3 class="text-xl font-bold text-white">${dest.name}</h3>
+                    <p class="text-slate-300 text-sm">${dest.tagline}</p>
+                    <span class="inline-flex items-center gap-2 text-sky-300 text-sm font-semibold group-hover:translate-x-1 transition">
+                        Usar este destino <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                destinationInput.value = dest.name;
+                destinationInput.focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            featuredContainer.appendChild(card);
+        });
+    }
+
+    refreshDestinationsBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        renderDestinations();
+    });
+
+    renderDestinations();
+
+    // Show loading on form submit
+    const mainForm = document.getElementById('main-form');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    mainForm.addEventListener('submit', function() {
+        loadingOverlay.classList.remove('hidden');
+        loadingOverlay.classList.add('flex');
+    });
+</script>
+{% endblock %}

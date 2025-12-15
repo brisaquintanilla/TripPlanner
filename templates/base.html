@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripPlanner - Tu Próxima Aventura</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+        .pro-small { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial; font-weight: 600; }
+        .bg-travel {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        /* Swipe card helpers */
+        .will-change-transform { will-change: transform; }
+        #card-container .rounded-2xl { transition: transform 300ms ease, opacity 300ms ease; }
+        #card-container .cursor-grab { cursor: grab; }
+        #card-container .cursor-grabbing { cursor: grabbing; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col">
+    <div id="loading-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center hidden">
+        <div class="w-16 h-16 border-4 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-white mt-4 font-semibold">Buscando tu próxima aventura...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-700 sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="group text-2xl font-extrabold flex items-center gap-3 text-white">
+                <span class="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-emerald-400 text-white shadow-lg shadow-sky-500/20">
+                    <i class="fa-solid fa-plane-departure"></i>
+                </span>
+                <span class="tracking-tight">
+                    <span class="text-white group-hover:text-sky-200 transition">Trip</span><span class="text-sky-400 group-hover:text-emerald-300 transition">Planner</span>
+                </span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="/" class="text-slate-300 hover:text-white transition inline-flex items-center gap-2"><i class="fa-solid fa-house"></i> Inicio</a>
+                <a href="/#destinos" class="text-slate-300 hover:text-white transition inline-flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Destinos</a>
+                <a href="/#contacto" class="text-slate-300 hover:text-white transition inline-flex items-center gap-2"><i class="fa-solid fa-envelope"></i> Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mx-auto px-6 mt-4">
+                    {% for category, message in messages %}
+                        <div class="p-4 mb-4 rounded-lg {{ 'bg-red-500/20 border border-red-500 text-red-200' if category == 'error' else 'bg-green-500/20 border border-green-500 text-green-200' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-8 mt-12 border-t border-slate-800">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <p>&copy; 2025 TripPlanner. Todos los derechos reservados.</p>
+            <div class="mt-4 space-x-4">
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,46 +1,82 @@
-## TripPlanner – Prototipo Flask
+TripPlanner
 
-Este es un prototipo universitario de una aplicación de planificación de viajes construida con **Flask**. La mayor parte de la lógica residirá en Python (backend), mientras que el frontend se mantiene ligero.
+Descripción
+- Genera itinerarios de viaje rápidos a partir de un destino y fechas. Elige hasta 3 intereses y desliza tarjetas para curar actividades. Incluye un buscador de ciudades optimizado, UI moderna con Tailwind, y un itinerario final en formato línea de tiempo vertical.
 
-### Estructura del proyecto
+Lo Nuevo (esta iteración)
+- Búsqueda de ciudades más rápida: búsqueda local-first + Teleport/Nominatim como fallback.
+- Hero centrado y motto: “Tu viaje en pocos clicks”.
+- Navbar renovada: icono con gradiente y enlaces con íconos.
+- Indicador de carga: overlay con spinner al enviar el formulario inicial.
+- Swipe mejorado: arrastre con pointer events y animaciones fluidas.
+- “6 destinos que te van a inspirar”: imágenes actualizadas y set aleatorio.
+- Actualización de imágenes en actividades e intereses (arte, compras, aventura, etc.).
+- Itinerario en línea de tiempo vertical con miniaturas circulares laterales.
 
-- `app.py`: aplicación principal de Flask y rutas.
-- `templates/index.html`: plantilla base que muestra la lista de viajes.
-- `static/app.js`: lógica básica del lado del cliente.
-- `requirements.txt`: dependencias de Python.
+Características
+- Plan en 3 pasos: destino/fechas → intereses → swipe de actividades.
+- Itinerario final con 3–4 actividades por día, con botones rápidos para búsquedas en Google Maps.
+- Wildcards: mezcla sugerida fuera de tus intereses para descubrir más.
+- UI con Tailwind CDN y Font Awesome; animaciones suaves y diseño responsive.
 
-### Requisitos previos
+Requisitos
+- Python 3.10+ (recomendado)
+- macOS / Linux / Windows
 
-- Python 3.9+ instalado.
-- (Opcional pero recomendado) uso de entorno virtual `venv`.
+Dependencias principales
+- Flask, requests, geopy
 
-### Instalación
-
-```bash
-cd TripPlanner
-
-# Crear y activar entorno virtual (macOS / Linux)
-python3 -m venv .venv
-source .venv/bin/activate
+Instalación
+```zsh
+# Crear entorno virtual
+python -m venv .venv
+source .venv/bin/activate  # en macOS/Linux
 
 # Instalar dependencias
-pip install -r requirements.txt
+pip install flask requests geopy
 ```
 
-### Ejecutar la aplicación
-
-```bash
+Ejecución
+```zsh
+# Opción 1: Puerto por defecto 5000
 python app.py
+
+# Opción 2: Puerto custom (ej. 5001) con venv
+PORT=5001 .venv/bin/python app.py
 ```
 
-Luego abre en tu navegador:
+Uso
+1) En la portada, ingresa destino y fechas. El autocompletado responde rápido con coincidencias locales. Al enviar, verás un spinner indicando carga.
+2) Selecciona hasta 3 intereses (comida, museos, arte, aventura, etc.).
+3) Desliza tarjetas (drag/swipe) para “like”/“nope”.
+4) Genera el itinerario en formato vertical con miniaturas circulares laterales. Abre búsquedas en mapas con un clic.
 
-- http://127.0.0.1:5000/
+Estructura de carpetas (parcial)
+- `app.py`: Flask app, rutas, búsqueda de ciudades, y base de datos mock de actividades.
+- `templates/base.html`: layout principal, navbar, estilos globales y spinner de carga.
+- `templates/index.html`: portada (hero, formulario, destinos destacados).
+- `templates/interests.html`: selección de intereses.
+- `templates/swipe.html`: tarjetas con gesto de arrastre/ swipe.
+- `templates/itinerary.html`: itinerario en línea de tiempo vertical con imágenes.
 
-Deberías ver la página de **Planificador de Viajes** con algunos viajes de ejemplo generados desde Python.
+Notas de implementación
+- Autocomplete: local-first (lista interna) → Teleport API → Nominatim (geopy) como fallback.
+- UI: Tailwind y Font Awesome por CDN; no requiere build de frontend.
+- Imágenes: se actualizaron varias (arte y cultura, compras, kayak, trekking, Reikiavik, Estambul, Astana, Cartagena, Viena, etc.).
 
-### Próximos pasos sugeridos
+Personalización rápida
+- Colores/acentos: ajusta utilidades Tailwind en los templates.
+- Destinos destacados: edita el array `featuredDestinations` en `templates/index.html`.
+- Actividades: modifica `ACTIVITIES_DB` en `app.py`.
 
-- Mover la lista de viajes a una clase o módulo de servicios en Python.
-- Agregar formularios en HTML para crear/editar/eliminar viajes.
-- Implementar validaciones y almacenamiento (por ejemplo, SQLite).
+Comandos útiles (git)
+```zsh
+# Agregar cambios, commitear y hacer push a main
+git add .
+git commit -m "UI polish: hero centrado, navbar, spinner; timeline vertical; búsqueda local-first; imágenes actualizadas"
+git push origin main
+```
+
+Licencia
+- Uso educativo/demostrativo. Agrega tu licencia si corresponde.
+

@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-12">
+    <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">¿Qué te interesa hacer en <span class="text-sky-400">{{ destination }}</span>?</h2>
+        <p class="text-slate-300 text-lg">Selecciona tus preferencias para personalizar tu experiencia.</p>
+    </div>
+
+    <form action="/interests" method="POST" class="max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Interest Card: Comida -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="comida" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-utensils text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Gastronomía</h3>
+                        <p class="text-slate-400 text-sm mt-2">Restaurantes, mercados y sabores locales.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Arte -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="arte" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpneyN9tGfVZ3glPCSjiDQmmSweitJn3QzbQ&s');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-palette text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Arte y Cultura</h3>
+                        <p class="text-slate-400 text-sm mt-2">Museos, galerías y exposiciones.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Paseo -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="paseo" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-person-walking text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Paseos</h3>
+                        <p class="text-slate-400 text-sm mt-2">Parques, plazas y caminatas.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Vistas -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="vistas" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-binoculars text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Vistas Panorámicas</h3>
+                        <p class="text-slate-400 text-sm mt-2">Miradores y paisajes increíbles.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Cafes -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="cafes" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-mug-hot text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Cafés y Relax</h3>
+                        <p class="text-slate-400 text-sm mt-2">Ambiente relajado y buen café.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Museos -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="museos" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1566127444979-b3d2b654e3d7?auto=format&fit=crop&w=800&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-landmark text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Historia y Museos</h3>
+                        <p class="text-slate-400 text-sm mt-2">Aprende sobre el pasado y la ciencia.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Aventura -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="aventura" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-mountain text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Aventura</h3>
+                        <p class="text-slate-400 text-sm mt-2">Kayak, globo, senderos épicos.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Vida Nocturna -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="nocturna" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=900&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-moon text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Vida nocturna</h3>
+                        <p class="text-slate-400 text-sm mt-2">Cocteles, jazz y rooftops.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Compras -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="compras" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://cdn.sanity.io/images/nxpteyfv/goguides/59aa10e938b999bcb34acdc4ffe461569df7ad21-1600x1066.jpg');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-shopping-bag text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Compras</h3>
+                        <p class="text-slate-400 text-sm mt-2">Mercados, outlets y hallazgos.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Playa -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="playa" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80');">
+                        <div class="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-umbrella-beach text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Playa y mar</h3>
+                        <p class="text-slate-400 text-sm mt-2">Veleros, snorkel y sunsets.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Interest Card: Bienestar -->
+            <label class="cursor-pointer group relative">
+                <input type="checkbox" name="interests" value="bienestar" class="peer sr-only">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border-2 border-slate-700 peer-checked:border-sky-500 peer-checked:bg-slate-800/80 transition-all duration-300 h-full hover:shadow-lg hover:shadow-sky-500/20">
+                    <div class="h-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=900&q=80');">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                    </div>
+                    <div class="p-6 text-center relative">
+                        <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-slate-900 p-3 rounded-full border border-slate-700 group-hover:scale-110 transition-transform peer-checked:border-sky-500 peer-checked:text-sky-400">
+                            <i class="fa-solid fa-leaf text-2xl"></i>
+                        </div>
+                        <h3 class="mt-4 text-xl font-bold text-white">Bienestar</h3>
+                        <p class="text-slate-400 text-sm mt-2">Spa, yoga y termales.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 opacity-0 peer-checked:opacity-100 transition-opacity">
+                        <div class="bg-sky-500 text-white rounded-full p-1">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                </div>
+            </label>
+
+        </div>
+
+        <p id="interest-helper" class="mt-8 text-center text-slate-300">Elige hasta 3 intereses. También agregaremos wildcards para sorprenderte.</p>
+
+        <div class="mt-12 text-center">
+            <button type="submit" class="inline-flex items-center gap-3 bg-sky-600 hover:bg-sky-700 text-white text-xl font-bold py-4 px-12 rounded-full shadow-lg shadow-sky-500/30 transition-all hover:scale-105">
+                Continuar
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    // Limitar selección a 3 intereses
+    const interestCheckboxes = document.querySelectorAll('input[name="interests"]');
+    const helper = document.getElementById('interest-helper');
+    const maxInterests = 3;
+
+    interestCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            const selected = Array.from(interestCheckboxes).filter((c) => c.checked);
+            if (selected.length > maxInterests) {
+                checkbox.checked = false;
+                helper.textContent = 'Solo puedes elegir 3 intereses. Ya añadiremos wildcards por ti.';
+                helper.classList.add('text-rose-300');
+                setTimeout(() => {
+                    helper.textContent = 'Elige hasta 3 intereses. También agregaremos wildcards para sorprenderte.';
+                    helper.classList.remove('text-rose-300');
+                }, 2000);
+            }
+        });
+    });
+</script>
+{% endblock %}

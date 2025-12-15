@@ -118,7 +118,27 @@
                 <i class="fa-solid fa-shuffle"></i> Otro set
             </button>
         </div>
-        <div id="featured-destinations" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <div id="featured-destinations" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for dest in featured_destinations %}
+            <button type="button" class="group relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/70 hover:border-sky-600 transition shadow-lg hover:shadow-sky-500/20 text-left"
+                onclick="document.getElementById('destination').value='{{ dest.name }}'; document.getElementById('destination').focus(); window.scrollTo({ top: 0, behavior: 'smooth' });">
+                <div class="h-48 bg-cover bg-center" style="background-image: url('{{ dest.image }}');">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent"></div>
+                </div>
+                <div class="p-5 space-y-2">
+                    <div class="flex items-center gap-2 text-sky-300 font-semibold text-xs uppercase tracking-[0.15em]">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Destino sugerido
+                    </div>
+                    <h3 class="text-xl font-bold text-white">{{ dest.name }}</h3>
+                    <p class="text-slate-300 text-sm">{{ dest.tagline }}</p>
+                    <span class="inline-flex items-center gap-2 text-sky-300 text-sm font-semibold group-hover:translate-x-1 transition">
+                        Usar este destino <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            </button>
+            {% endfor %}
+        </div>
     </div>
 </section>
 
@@ -263,8 +283,7 @@
         loadFeatured();
     });
 
-    // Cargar set inicial del backend
-    loadFeatured();
+    // Cargar otro set desde el backend sólo al pulsar refresh
 
     // Show loading on form submit
     const mainForm = document.getElementById('main-form');

@@ -2,23 +2,12 @@ TripPlanner
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue) ![Flask](https://img.shields.io/badge/Flask-2.x-lightgrey) ![Status](https://img.shields.io/badge/Status-Activo-success)
 
-## Descripción
-- Genera itinerarios de viaje rápidos a partir de un destino y fechas. Elige hasta 3 intereses y desliza tarjetas para curar actividades. Incluye un buscador de ciudades optimizado, UI moderna con Tailwind, y un itinerario final en formato línea de tiempo vertical.
-
-
-## Características
-- Plan en 3 pasos: destino/fechas → intereses → swipe de actividades.
-- Itinerario final con 3–4 actividades por día, con botones rápidos para búsquedas en Google Maps.
-- Wildcards: mezcla sugerida fuera de tus intereses para descubrir más.
-- UI con Tailwind CDN y Font Awesome; animaciones suaves y diseño responsive.
- - Impresión/Exportación: vista de impresión lista para "Guardar como PDF" desde el navegador.
-
 ## Requisitos
 - Python 3.10+ (recomendado)
 - macOS / Linux / Windows
 
-## Dependencias principales
-- Flask, requests, geopy
+## Descripción
+- Genera itinerarios de viaje rápidos a partir de un destino y fechas. Elige hasta 3 intereses y desliza tarjetas para curar actividades. Incluye un buscador de ciudades optimizado, UI moderna con Tailwind, y un itinerario final en formato línea de tiempo vertical.
 
 ## Instalación
 ```zsh

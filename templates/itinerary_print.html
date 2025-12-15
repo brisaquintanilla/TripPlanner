@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  /* Print-friendly styling */
+  @media print {
+    nav, footer, .no-print { display: none !important; }
+    body { background: white !important; }
+  }
+  .print-container { max-width: 860px; margin: 0 auto; }
+  .header { text-align:center; margin: 24px 0 16px; }
+  .title { font-size: 28px; font-weight: 800; color: #ffffff; }
+  .subtitle { color: #93c5fd; font-weight: 600; }
+  .dates { color: #94a3b8; margin-top: 6px; }
+  .toolbar { display:flex; justify-content:center; gap:12px; margin: 12px 0 24px; }
+  .day { margin: 12px 0; border: 1px solid #334155; border-radius: 12px; background: rgba(15,23,42,.6); }
+  .day h3 { background: #0f172a; color: white; padding: 10px 14px; border-bottom: 1px solid #334155; font-weight: 700; }
+  .act { padding: 10px 14px; display: flex; align-items: center; gap: 12px; page-break-inside: avoid; }
+  .act img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #334155; }
+  .act .name { color: #e2e8f0; font-weight: 600; }
+  .act .cat { color: #94a3b8; font-size: 11px; text-transform: uppercase; }
+</style>
+<div class="print-container px-4 py-8">
+  <div class="header">
+    <div class="subtitle">Tu viaje en pocos clicks</div>
+    <div class="title">Itinerario · {{ destination }}</div>
+    <div class="dates">{{ start_date.strftime('%d %b, %Y') }} → {{ end_date.strftime('%d %b, %Y') }}</div>
+  </div>
+  <div class="toolbar no-print">
+    <button onclick="window.print()" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-semibold py-2 px-4 rounded-md">
+      <i class="fa-solid fa-print"></i> Imprimir / Guardar como PDF
+    </button>
+    <a href="/itinerary" class="inline-flex items-center gap-2 text-sky-400 hover:text-sky-300 font-medium">
+      <i class="fa-solid fa-arrow-left"></i> Volver al itinerario
+    </a>
+  </div>
+  {% for day_plan in itinerary %}
+  <div class="day">
+    <h3>Día {{ day_plan.day }}</h3>
+    {% for activity in day_plan.activities %}
+    <div class="act">
+      {% if activity.image %}
+      <img src="{{ activity.image }}" alt="{{ activity.title }}">
+      {% else %}
+      <span class="w-10 h-10 rounded-full border border-slate-700 bg-sky-500/20 text-sky-300 flex items-center justify-center">
+        <i class="fa-solid {{ activity.icon }}"></i>
+      </span>
+      {% endif %}
+      <div>
+        <div class="name">{{ activity.title }}</div>
+        <div class="cat">{{ activity.category }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

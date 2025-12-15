@@ -30,21 +30,23 @@
                 <div>
                     <label for="start_date" class="block text-sm font-medium text-slate-300 mb-1">Fecha de Ida</label>
                     <div class="relative rounded-lg">
-                        <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
-                            <i class="fa-regular fa-calendar"></i>
-                        </div>
+                        <button type="button" id="start_date_btn" aria-label="Abrir calendario"
+                            class="absolute inset-y-0 left-3 my-1 flex items-center justify-center w-8 h-8 rounded-lg bg-sky-600/20 text-sky-300 border border-sky-600/40 hover:bg-sky-600/30 hover:text-white transition">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </button>
                         <input type="date" name="start_date" id="start_date" required 
-                            class="block w-full pl-10 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm focus:ring-sky-500 focus:border-sky-500 transition">
+                            class="cursor-pointer block w-full pl-12 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm hover:border-sky-500 focus:ring-sky-500 focus:border-sky-500 transition">
                     </div>
                 </div>
                 <div>
                     <label for="end_date" class="block text-sm font-medium text-slate-300 mb-1">Fecha de Vuelta</label>
                     <div class="relative rounded-lg">
-                        <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-slate-400">
-                            <i class="fa-regular fa-calendar-check"></i>
-                        </div>
+                        <button type="button" id="end_date_btn" aria-label="Abrir calendario"
+                            class="absolute inset-y-0 left-3 my-1 flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-600/20 text-emerald-300 border border-emerald-600/40 hover:bg-emerald-600/30 hover:text-white transition">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </button>
                         <input type="date" name="end_date" id="end_date" required 
-                            class="block w-full pl-10 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm focus:ring-sky-500 focus:border-sky-500 transition">
+                            class="cursor-pointer block w-full pl-12 pr-3 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white sm:text-sm hover:border-emerald-500 focus:ring-emerald-500 focus:border-emerald-500 transition">
                     </div>
                 </div>
             </div>
@@ -148,6 +150,23 @@
         document.getElementById('end_date').setAttribute('min', this.value);
     });
 
+    // Clickable calendar icons
+    const startBtn = document.getElementById('start_date_btn');
+    const endBtn = document.getElementById('end_date_btn');
+    const startInput = document.getElementById('start_date');
+    const endInput = document.getElementById('end_date');
+
+    function openPicker(input) {
+        if (typeof input.showPicker === 'function') {
+            input.showPicker();
+        } else {
+            input.focus();
+        }
+    }
+
+    startBtn?.addEventListener('click', () => openPicker(startInput));
+    endBtn?.addEventListener('click', () => openPicker(endInput));
+
     // Autocomplete Logic
     const destinationInput = document.getElementById('destination');
     const autocompleteList = document.getElementById('autocomplete-list');
@@ -197,17 +216,18 @@
     const featuredContainer = document.getElementById('featured-destinations');
     const refreshDestinationsBtn = document.getElementById('refresh-destinations');
     const featuredDestinations = [
-        { name: 'Kyoto, Japón', image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=900&q=80', tagline: 'Templos y jardines zen' },
-        { name: 'Marrakech, Marruecos', image: 'https://images.unsplash.com/photo-1505764706515-aa95265c5abc?auto=format&fit=crop&w=900&q=80', tagline: 'Medinas, zocos y té de menta' },
+        { name: 'Kyoto, Japón', image: 'https://st3.depositphotos.com/2051931/18142/i/450/depositphotos_181425574-stock-photo-japanese-pagoda-old-house-snow.jpg', tagline: 'Templos y jardines zen' },
+        { name: 'Marrakech, Marruecos', image: 'https://assets3.thrillist.com/v1/image/2819216/792x526/scale;webp=auto;jpeg_quality=60;progressive.jpg', tagline: 'Medinas, zocos y té de menta' },
         { name: 'Reikiavik, Islandia', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStaNRl2xdkzcgwi0v5rEle65yX9VdnoWQBJg&s', tagline: 'Auroras, cascadas y termas' },
         { name: 'Lisboa, Portugal', image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80', tagline: 'Tranvías, fado y miradores' },
         { name: 'Ciudad del Cabo, Sudáfrica', image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=900&q=80', tagline: 'Montaña de la Mesa y océano' },
         { name: 'Viena, Austria', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/6b/48/6d/photo0jpg.jpg?w=900&h=500&s=1', tagline: 'Palacios, ópera y café' },
-                { name: 'Cartagena, Colombia', image: 'https://www.exp1.com/blog/wp-content/uploads/sites/7/2020/11/Day-4.jpeg', tagline: 'Murallas coloniales y mar Caribe' },,
+        { name: 'Cartagena, Colombia', image: 'https://www.exp1.com/blog/wp-content/uploads/sites/7/2020/11/Day-4.jpeg', tagline: 'Murallas coloniales y mar Caribe' },
         { name: 'Seúl, Corea del Sur', image: 'https://images.unsplash.com/photo-1506816561089-5cc37b3aa9b0?fit=max&fm=jpg&ixid=M3wzNTY3MHwwfDF8YWxsfHx8fHx8fHx8MTY5ODkzMTI5Mnw&ixlib=rb-4.0.3&q=75&w=720&utm_medium=referral&utm_source=vocal.media', tagline: 'Palacios, K-food y neón' },
-        { name: 'Nueva York, Estados Unidos', image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80', tagline: 'Skyline, Broadway y parques' },
-        { name: 'Queenstown, Nueva Zelanda', image: 'https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?auto=format&fit=crop&w=900&q=80', tagline: 'Aventura y lagos cristalinos' },
+        { name: 'Nueva York, Estados Unidos', image: 'https://images.contentstack.io/v3/assets/blt06f605a34f1194ff/blt143cf9f3ca5a3a62/65610a0ed28c5a5f993deafe/BCC-2022-NYC-30THINGS-HEADER-e1649786857821-1-1536x1056.webp?format=webp&quality=60&width=1440', tagline: 'Skyline, Broadway y parques' },
+        { name: 'Queenstown, Nueva Zelanda', image: 'https://www.newzealand.com/assets/externally-managed-assets/tbd-assets/tbd-folder-10092946/img-1731461073-7951-258451-tbd-asset__ExtRewriteWyJwbmciLCJqcGciXQ_aWxvdmVrZWxseQo_CropResizeWzk0MCw1MzAsOTAsImpwZyJd.jpg', tagline: 'Aventura y lagos cristalinos' },
         { name: 'Estambul, Turquía', image: 'https://www.traveltalktours.com/wp-content/smush-webp/2024/05/Choose-Your-Favorite-Destinations-in-Turkey-1024x683.jpg.webp', tagline: 'Mezquitas, bazares y Bosforo' },
+        { name: 'Buenos Aires, Argentina', image: 'https://plus.unsplash.com/premium_photo-1697729901052-fe8900e24993?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnVlbm9zJTIwYWlyZXN8ZW58MHx8MHx8fDA%3D', tagline: 'Tango, asado y arquitectura europea' },
         { name: 'Astana, Kazajistán', image: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/91/c1/e3/caption.jpg?w=1200&h=-1&s=1', tagline: 'Arquitectura futurista y parques' }
     ];
 

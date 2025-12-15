@@ -669,6 +669,23 @@ def itinerary_view():
         map_buttons=map_buttons,
     )
 
+@app.route('/itinerary/print')
+def itinerary_print():
+    if not all(k in session for k in ("destination", "start_date", "end_date", "itinerary")):
+        return redirect(url_for('index'))
+
+    start_date = datetime.strptime(session['start_date'], '%Y-%m-%d').date()
+    end_date = datetime.strptime(session['end_date'], '%Y-%m-%d').date()
+    itinerary = session['itinerary']
+
+    return render_template(
+        'itinerary_print.html',
+        destination=session['destination'],
+        start_date=start_date,
+        end_date=end_date,
+        itinerary=itinerary,
+    )
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, port=port)

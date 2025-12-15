@@ -1,3 +1,6 @@
+# Exclude templates and static assets from GitHub Linguist language stats
+templates/** linguist-vendored
+static/** linguist-vendored
 # Favor Python in GitHub language stats by excluding templates/static
 templates/** linguist-vendored
 static/** linguist-vendored

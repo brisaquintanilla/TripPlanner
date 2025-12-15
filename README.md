@@ -55,6 +55,7 @@ Uso
 
 Estructura de carpetas (parcial)
 - `app.py`: Flask app, rutas, búsqueda de ciudades, y base de datos mock de actividades.
+- `tripplanner/data.py`: constantes de datos (actividades, intereses, ciudades y destinos destacados).
 - `templates/base.html`: layout principal, navbar, estilos globales y spinner de carga.
 - `templates/index.html`: portada (hero, formulario, destinos destacados).
 - `templates/interests.html`: selección de intereses.
@@ -69,8 +70,9 @@ Notas de implementación
 
 Personalización rápida
 - Colores/acentos: ajusta utilidades Tailwind en los templates.
-- Destinos destacados: edita el array `featuredDestinations` en `templates/index.html`.
-- Actividades: modifica `ACTIVITIES_DB` en `app.py`.
+ - Destinos destacados: edita `FEATURED_DESTINATIONS` en `tripplanner/data.py` (o usa `/api/featured`).
+ - Actividades: modifica `ACTIVITIES_DB` en `tripplanner/data.py`.
+ - Intereses: ajusta `INTERESTS_DEF` en `tripplanner/data.py`.
 
 Comandos útiles (git)
 ```zsh
